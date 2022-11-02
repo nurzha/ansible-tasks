@@ -1,0 +1,30 @@
+
+- name: Create static website
+  hosts: centos
+  become: true
+  tasks:
+    - name: httpd install
+      ansible.builtin.yum:
+        name: httpd
+        state: latest
+
+    - name: install unzip
+      package:
+        name: unzip
+        state: present
+
+    - name: Unarchive a file that needs to be downloaded (added in 2.0)
+      ansible.builtin.unarchive:
+        src: https://www.free-css.com/assets/files/free-css-templates/download/page282/yogasana.zip
+        dest: /var/www/html/
+        remote_src: yes
+
+    - name: custom index.html
+      ansible.builtin.copy:
+        dest: /var/www/html/index.html
+        content: |
+            https://www.free-css.com/free-css-templates/page282/yogasana
+
+
+
+
